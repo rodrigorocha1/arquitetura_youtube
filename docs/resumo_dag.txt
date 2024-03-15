@@ -2,5 +2,16 @@
 2 - Verificar se o vídeo é brasileiro
   2.1 - guardar o hitórico de busca
   2.2 - Guardar o vídeos brasileiros
-3- buscar os dados dos vídeos
-  3.1 - verificar se o vídeo tem comentário
+  2.3 - Guardar id_canais_brasileiros
+3- Verificar total inscritos de acordo com o canal
+    3.1- guardar resultado
+4- buscar os dados dos vídeos
+  4.1 - verificar se o vídeo tem comentário
+  4.2 - guardar requisição do vídeo
+  4.4 Guardar os vídeos que tem comentários
+5 - Abrir vídeo que tém comentários 
+    5.1 - verificar se o comentário do vídeo tem resposta
+    5.2 - Guardar os ids com a reposta dos comentários
+    5.3 - Guardar requisição comentário
+6 - Ler id resposta comentários
+    6.1 - Guardar requisição que tem comentários
