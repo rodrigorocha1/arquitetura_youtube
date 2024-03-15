@@ -4,35 +4,36 @@ try:
     sys.path.insert(0, os.path.abspath(os.curdir))
 except ModuleNotFoundError:
     pass
+from datetime import datetime
 from airflow.decorators import dag, task, task_group
-from pendulum import datetime
+from airflow.operators.python import PythonOperator
 
 
-@dag(
-    start_date=datetime(2023, 8, 1),
-    schedule=None,
-    catchup=False
-)
-def dag_hello_word():
+def somar(a, b):
+    print(a+b)
+
+
+@dag(schedule_interval=None, start_date=datetime(2024, 3, 14), catchup=False, tags=['example'])
+def custom_tg():
     @task
-    def exibir_oi():
-        print('OI')
+    def get_num_1():
+        print('numero 1')
 
-    @task
-    def exibir_oi_dois():
-        print('OI')
+    lista_lista = [(1, 2), (3, 4)]
 
-    @task
-    def exibir_oi_tres():
-        print('OI')
+    @task_group(group_id='task_soma')
+    def task_soma():
+        lista_task = []
+        for c, l in enumerate(lista_lista):
 
-    @task_group
-    def exibir_varios_oi():
-        for _ in range(1, 4):
-            exibir_oi_dois()
-        exibir_oi_tres()
+            task_soma = PythonOperator(
+                task_id=f'somar_{c}',
+                python_callable=somar,
+                op_kwargs={'a': [0], 'b': [1]}
+            )
+            lista_task.append(task_soma)
 
-    exibir_oi() >> exibir_varios_oi()
+    get_num_1() >> task_soma()
 
 
-dag = dag_hello_word()
+custom_tg()

@@ -1,0 +1,6 @@
+1 - pesquisar por assunto 
+2 - Verificar se o vídeo é brasileiro
+  2.1 - guardar o hitórico de busca
+  2.2 - Guardar o vídeos brasileiros
+3- buscar os dados dos vídeos
+  3.1 - verificar se o vídeo tem comentário
