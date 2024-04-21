@@ -1,39 +1,30 @@
-try:
-    import sys
-    import os
-    sys.path.insert(0, os.path.abspath(os.curdir))
-except ModuleNotFoundError:
-    pass
+from airflow.decorators import task, dag, task_group
 from datetime import datetime
-from airflow.decorators import dag, task, task_group
-from airflow.operators.python import PythonOperator
 
 
-def somar(a, b):
-    print(a+b)
+@task
+def add_task(x, y):
+    print(f"Task args: x={x}, y={y}")
+    return x + y
 
 
-@dag(schedule_interval=None, start_date=datetime(2024, 3, 14), catchup=False, tags=['example'])
-def custom_tg():
+@dag(start_date=datetime(2022, 1, 1))
+def mydag():
     @task
-    def get_num_1():
-        print('numero 1')
+    def inicio_dag():
+        print('ID')
 
-    lista_lista = [(1, 2), (3, 4)]
+    @task
+    def fim_dag():
+        print('FD')
 
-    @task_group(group_id='task_soma')
-    def task_soma():
-        lista_task = []
-        for c, l in enumerate(lista_lista):
+    @task_group
+    def teste_task_group():
 
-            task_soma = PythonOperator(
-                task_id=f'somar_{c}',
-                python_callable=somar,
-                op_kwargs={'a': [0], 'b': [1]}
-            )
-            lista_task.append(task_soma)
+        for i in range(3):
+            add_task.override(task_id=f"add_start_{i}")(i, i)
 
-    get_num_1() >> task_soma()
+    inicio_dag() >> teste_task_group() >> fim_dag()
 
 
-custom_tg()
+mydag()
