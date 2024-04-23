@@ -37,3 +37,4 @@ class YoutubeBase(ABC):
                     next_token = json_response['nextPageToken']
                     param['pageToken'] = next_token
                 except KeyError:
+                    break
