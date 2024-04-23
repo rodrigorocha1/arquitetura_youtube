@@ -16,7 +16,7 @@ class YoutubeBase(ABC):
     def criar_url(self):
         pass
 
-    def _conectar_api(self, params: Dict[str, str]) -> Dict:
+    def __conectar_api(self, params: Dict[str, str]) -> Dict:
         req = requests.get(url=self.criar_url, params=params)
         return req.json()
 
@@ -26,7 +26,7 @@ class YoutubeBase(ABC):
         next_token = ''
         for param in params:
             while next_token is not None:
-                response = self._conectar_api(param)
+                response = self.__conectar_api(param)
                 if response:
                     json_response = response.json()
                     json_response['data_extracao'] = datetime.now().strftime(
