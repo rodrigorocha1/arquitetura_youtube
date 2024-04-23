@@ -13,7 +13,7 @@ class YoutubeBase(ABC):
         self._KEY = os.environ['key']
 
     @abstractmethod
-    def criar_url(self):
+    def criar_url(self) -> str:
         pass
 
     def __conectar_api(self, params: Dict[str, str]) -> Dict:

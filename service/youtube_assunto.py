@@ -8,11 +8,11 @@ class YoutubeAssunto(YoutubeBase):
         self._data_inicio = data_inicio
         super().__init__()
 
-    def criar_url(self):
+    def criar_url(self) -> str:
         return self._url + '/search'
 
     @property
-    def params(self):
+    def params(self) -> List[str]:
         return [
             {
                 'part':  'snippet',
