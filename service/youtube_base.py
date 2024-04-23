@@ -32,12 +32,10 @@ class YoutubeBase(ABC):
                     json_response['data_extracao'] = datetime.now().strftime(
                         '%Y-%m-%d %H:%M:%S'
                     )
-
                     yield json_response
                     try:
                         next_token = json_response['nextPageToken']
                         param['pageToken'] = next_token
-                        print('próximo token', next_token)
                     except KeyError:
                         break
                 else:
