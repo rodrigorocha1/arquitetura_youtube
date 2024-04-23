@@ -20,7 +20,7 @@ class YoutubeBase(ABC):
         req = requests.get(url=self.criar_url, params=params)
         return req.json()
 
-    def _executar_paginacao(self,  param: Dict) -> Iterable[Dict]:
+    def executar_paginacao(self,  param: Dict) -> Iterable[Dict]:
 
         i = 1
         next_token = ''
