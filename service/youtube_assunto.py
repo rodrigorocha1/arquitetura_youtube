@@ -1,10 +1,30 @@
 from service.youtube_base import YoutubeBase
 from typing import Dict
+import requests
+from datetime import datetime
 
 
 class YoutubeAssunto(YoutubeBase):
-    def __init__(self, assunto: str, data_inicio: str, requisicao: Dict) -> None:
-        self._assunto = assunto
-        self._data_inicio = data_inicio
-        self._url_chamada = self._url_base + 'search'
-        super().__init__(requisicao=requisicao)
+    def __init__(self, assunto: str, data_hora_busca: str) -> None:
+
+        self.__path_url = 'search'
+        self.__params = {
+            'part': 'snippet',
+            'regionCode': 'BR',
+            'relevanceLanguage': 'pt',
+            'maxResults': '50',
+            'q': assunto,
+            'publishedAfter': data_hora_busca,
+
+        }
+        super().__init__(params=self.__params)
+
+    def conectar_api(self) -> Dict:
+        req = requests.get(url=self._url_base +
+                           self.__path_url, params=self.__params)
+        req = req.json()
+        req['data_extracao'] = datetime.now().strftime(
+            '%Y-%m-%d %H:%M:%S'
+        )
+
+        return req

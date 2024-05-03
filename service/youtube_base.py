@@ -1,36 +1,39 @@
-from abc import ABC
+try:
+    import sys
+    import os
+    sys.path.insert(0, os.path.abspath(os.curdir))
+except ModuleNotFoundError:
+    pass
+from abc import ABC, abstractmethod
 from dotenv import load_dotenv
 import requests
 from typing import Dict, Iterable
 import os
 from datetime import datetime
+from variaveis.variaveis import chave
 load_dotenv()
 
 
 class YoutubeBase(ABC):
-    def __init__(self, requisicao: Dict) -> None:
+    def __init__(self, params: Dict) -> None:
         self._url_base = os.environ['url']
-        self._KEY = requisicao
+        self._KEY = chave
+        self._params = params
+        self._params['key'] = self._KEY
 
-    def __conectar_api(self, params: Dict[str, str]) -> Dict:
-        req = requests.get(url=self.criar_url, params=params)
-        return req.json()
+    @abstractmethod
+    def conectar_api(self) -> Dict:
+        pass
 
-    def executar_paginacao(self,  param: Dict) -> Iterable[Dict]:
-
-        i = 1
+    def executar_paginacao(self,) -> Iterable[Dict]:
         next_token = ''
-
         while next_token is not None:
-            response = self.__conectar_api(param)
+            response = self.conectar_api()
             if response:
-                json_response = response.json()
-                json_response['data_extracao'] = datetime.now().strftime(
-                    '%Y-%m-%d %H:%M:%S'
-                )
-                yield json_response
+                yield response
                 try:
-                    next_token = json_response['nextPageToken']
-                    param['pageToken'] = next_token
+                    next_token = response['nextPageToken']
+                    self._params['pageToken'] = next_token
+                    print('próximo token', next_token)
                 except KeyError:
                     break
