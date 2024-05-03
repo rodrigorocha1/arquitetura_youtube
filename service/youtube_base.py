@@ -1,20 +1,16 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from dotenv import load_dotenv
-import os
 import requests
-from typing import List, Dict, Iterable
+from typing import Dict, Iterable
+import os
 from datetime import datetime
 load_dotenv()
 
 
 class YoutubeBase(ABC):
-    def __init__(self) -> None:
-        self._url = os.environ['url']
-        self._KEY = os.environ['key']
-
-    @abstractmethod
-    def criar_url(self) -> str:
-        pass
+    def __init__(self, requisicao: Dict) -> None:
+        self._url_base = os.environ['url']
+        self._KEY = requisicao
 
     def __conectar_api(self, params: Dict[str, str]) -> Dict:
         req = requests.get(url=self.criar_url, params=params)
