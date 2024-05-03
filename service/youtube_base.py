@@ -5,11 +5,8 @@ try:
 except ModuleNotFoundError:
     pass
 from abc import ABC, abstractmethod
-from dotenv import load_dotenv
-import requests
 from typing import Dict, Iterable
-import os
-from datetime import datetime
+from dotenv import load_dotenv
 from variaveis.variaveis import chave
 load_dotenv()
 
