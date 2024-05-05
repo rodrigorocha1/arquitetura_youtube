@@ -28,6 +28,9 @@ for pg in pgs:
     lista_videos = DadosYoutube.obter_lista_videos(req=pg)
     print(lista_videos)
     ij.salvar_dados(req=pg)
+    lista_canais = [ item['snippet']['channelId'] for item in pg['items']]
+    print(lista_canais)
+
     ifp = InfraPicke(
         diretorio_datalake='bronze',
         termo_assunto=assunto.replace(' ', ''),
