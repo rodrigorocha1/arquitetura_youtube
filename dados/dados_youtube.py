@@ -4,7 +4,7 @@ try:
     sys.path.insert(0, os.path.abspath(os.curdir))
 except ModuleNotFoundError:
     pass
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import requests
 import variaveis.variaveis as v
 
@@ -39,8 +39,8 @@ class DadosYoutube():
             return False
 
     @classmethod
-    def obter_lista_videos(cls, req: Dict) -> List[str]:
-        """Método para obter os vídeos dos canais brasileiros
+    def obter_lista_canal_videos(cls, req: Dict) -> List[set[List[Tuple['str', 'str']]]]:
+        """Método para obter os vídeos e canais brasileiros
 
         Args:
             req (Dict): requisição da api do youtube
@@ -51,7 +51,7 @@ class DadosYoutube():
         lista_videos = []
         for item in req['items']:
             if cls.verificar_idioma_canal(item['snippet']['channelId']):
-                lista_videos.append(item['id']['videoId'])
+                lista_videos.append((item['snippet']['channelId'],item['id']['videoId']))
         return list(set(lista_videos))
 
     @classmethod
