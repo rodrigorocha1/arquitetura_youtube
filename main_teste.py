@@ -26,6 +26,7 @@ for pg in pgs:
         nome_arquivo='req.json'
     )
     lista_canais_videos = DadosYoutube.obter_lista_canal_videos(req=pg)
+    lista_canais_videos[0]
     print(lista_canais_videos)
     ij.salvar_dados(req=pg)
 
