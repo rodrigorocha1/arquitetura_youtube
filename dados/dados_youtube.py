@@ -1,3 +1,9 @@
+try:
+    import sys
+    import os
+    sys.path.insert(0, os.path.abspath(os.curdir))
+except ModuleNotFoundError:
+    pass
 from typing import Dict, List
 import requests
 import variaveis.variaveis as v
@@ -22,7 +28,7 @@ class DadosYoutube():
                 'id': id_canal,
                 'maxResults': '100'
             }
-            url = v.url_youtube + '/channels/'
+            url = v.url + '/channels/'
             response = requests.get(url=url, params=params)
             req = response.json()
             flag = req['items'][0]['snippet']['country']
