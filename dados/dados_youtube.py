@@ -18,7 +18,7 @@ class DadosYoutube():
         try:
             params = {
                 'part': 'snippet,contentDetails, id',
-                'key': v.chave_youtube,
+                'key': v.chave,
                 'id': id_canal,
                 'maxResults': '100'
             }

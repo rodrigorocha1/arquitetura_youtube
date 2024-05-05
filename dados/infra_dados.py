@@ -1,5 +1,5 @@
 import os
-from src.dados.iinfra_dados import IInfraDados
+from dados.iinfra_dados import IInfraDados
 
 
 class InfraDados(IInfraDados):
@@ -31,8 +31,9 @@ class InfraDados(IInfraDados):
             self._CAMINHO_BASE,
             self._diretorio_datalake,
             self._termo_assunto,
-            self._path_extracao,
-            self._metrica
+            self._path_extracao,       
+            self._metrica,
+            self._nome_arquivo
         ) if self._metrica is not None else os.path.join(
             self._CAMINHO_BASE,
             self._diretorio_datalake,

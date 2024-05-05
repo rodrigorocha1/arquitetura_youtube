@@ -1,5 +1,5 @@
 import json
-from src.dados.infra_dados import InfraDados
+from dados.infra_dados import InfraDados
 import os
 
 
