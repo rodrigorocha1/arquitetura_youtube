@@ -10,15 +10,16 @@ data_hora_busca = data_hora_busca.strftime('%Y-%m-%dT%H:%M:%SZ')
 
 ya = YoutubeAssunto(assunto='Linux', data_hora_busca=data_hora_busca)
 pgs = ya.executar_paginacao()
-
+path_data = data_hora_busca.replace("-", "_").replace("T", "_").replace("Z", "").replace(":","_")
 for pg in pgs:
-    print(data_hora_busca)
+    print(path_data)
     ij = InfraJson(
         diretorio_datalake='bronze',
         termo_assunto='linux',
         metrica='requisicao_busca',
-        
+        path_data=f'extracao_{path_data}',
         nome_arquivo='req.json'
     )
     ij.salvar_dados(req=pg)
+    # Colocar aqui para verificar o canal e gravar o arquivo pkl se for canal brasileiro
     print()
