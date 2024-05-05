@@ -13,7 +13,7 @@ load_dotenv()
 
 class YoutubeBase(ABC):
     def __init__(self, params: Dict) -> None:
-        self._url_base = os.environ['url']
+        self._url_base = os.environ['url_youtube']
         self._KEY = chave
         self._params = params
         self._params['key'] = self._KEY

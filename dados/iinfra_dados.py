@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class IIIInfraDados(ABC):
+class IInfraDados(ABC):
 
     @abstractmethod
     def salvar_dados(

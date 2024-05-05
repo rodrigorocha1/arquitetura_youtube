@@ -9,7 +9,7 @@ class InfraJson(InfraDados):
         super().__init__(diretorio_datalake, termo_assunto,
                           metrica, nome_arquivo)
 
-    def salvar_dados(self, **kwargs):
+    def salvar_dados(self, req):
         """Método para guardar json
         """
 
@@ -17,7 +17,7 @@ class InfraJson(InfraDados):
             os.makedirs(self._diretorio_completo)
 
         with open(os.path.join(self._diretorio_completo, self._nome_arquivo), 'a') as arquivo_json:
-            json.dump(kwargs['req'],  arquivo_json, ensure_ascii=False)
+            json.dump(req,  arquivo_json, ensure_ascii=False)
             arquivo_json.write('\n')
 
     def carregar_dados(self):

@@ -18,7 +18,6 @@ for pg in pgs:
         termo_assunto='linux',
         metrica='requisicao_busca',
         nome_arquivo='req.json'
-  
     )
-    ij.salvar_dados(kwargs=pg)
+    ij.salvar_dados(req=pg)
     print()

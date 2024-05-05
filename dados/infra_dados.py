@@ -6,9 +6,9 @@ class InfraDados(IInfraDados):
     def __init__(
         self,
         diretorio_datalake: str,
-            termo_assunto: str,
-            metrica: str,
-            nome_arquivo: str,
+        termo_assunto: str,
+        metrica: str,
+        nome_arquivo: str,
 
     ) -> None:
         """_summary_
@@ -22,18 +22,19 @@ class InfraDados(IInfraDados):
         """
         self._diretorio_datalake = diretorio_datalake
         self._termo_assunto = termo_assunto.lower()
-        self._path_extracao = path_extracao
         self._metrica = metrica
         self._nome_arquivo = nome_arquivo
         self._CAMINHO_BASE = os.getcwd()
         self._diretorio_completo = os.path.join(
             self._CAMINHO_BASE,
+            'data',
             self._diretorio_datalake,
             self._termo_assunto,  
             self._metrica,
             self._nome_arquivo
         ) if self._metrica is not None else os.path.join(
             self._CAMINHO_BASE,
+            'data',
             self._diretorio_datalake,
             self._termo_assunto,
             self._nome_arquivo
