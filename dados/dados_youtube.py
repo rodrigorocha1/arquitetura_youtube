@@ -39,7 +39,7 @@ class DadosYoutube():
             return False
 
     @classmethod
-    def obter_lista_canal_videos(cls, req: Dict) -> List[set[List[Tuple['str', 'str']]]]:
+    def obter_lista_canal_videos(cls, req: Dict) -> List[List[Tuple['str', 'str']]]:
         """Método para obter os vídeos e canais brasileiros
 
         Args:

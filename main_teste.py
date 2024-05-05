@@ -1,6 +1,7 @@
 
 import pendulum
-from dados.dados_youtube import DadosYoutube
+
+from service.youtube_canal import YoutubeCanal
 from service.youtube_assunto import YoutubeAssunto
 from dados.infra_json import InfraJson
 from dados.infra_pickle import InfraPicke
@@ -25,20 +26,25 @@ for pg in pgs:
         path_data=f'extracao_{path_data}',
         nome_arquivo='req.json'
     )
-    lista_canais_videos = DadosYoutube.obter_lista_canal_videos(req=pg)
-
-    print(lista_canais_videos)
+    lista_canais_videos = [ ( item['snippet']['channelId'], item['id']['videoId']) for item in pg['items']]
+    lista_videos_brasileiros = []
+    for canal_video in lista_canais_videos:
+        yc = YoutubeCanal(id_canal=canal_video[0])
+        if yc.listar_canais():
+            lista_videos_brasileiros.append(canal_video)
+    
     ij.salvar_dados(req=pg)
 
-
-    # ifp = InfraPicke(
-    #     diretorio_datalake='bronze',
-    #     termo_assunto=assunto.replace(' ', ''),
-    #     metrica=None,
-    #     path_data=f'extracao_{path_data}',
-    #     nome_arquivo='id_videos.pkl'
-    # )
-    # ifp.salvar_dados(lista=lista_videos)
+    nome_arquivos = ['id_videos.pkl', 'id_canais_pkl']
+    for nome_arquivo in nome_arquivos:
+        ifp = InfraPicke(
+            diretorio_datalake='bronze',
+            termo_assunto=assunto.replace(' ', ''),
+            metrica=None,
+            path_data=f'extracao_{path_data}',
+            nome_arquivo='id_videos.pkl'
+        )
+        ifp.salvar_dados(lista=lista_videos_brasileiros)
     
     # # Colocar aqui para verificar o canal e gravar o arquivo pkl se for canal brasileiro
 
