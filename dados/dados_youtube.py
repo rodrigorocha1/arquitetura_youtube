@@ -28,7 +28,7 @@ class DadosYoutube():
                 'id': id_canal,
                 'maxResults': '100'
             }
-            url = v.url + '/channels/'
+            url = v.url + 'channels/'
             response = requests.get(url=url, params=params)
             req = response.json()
             flag = req['items'][0]['snippet']['country']
