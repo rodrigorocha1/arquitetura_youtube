@@ -1,14 +1,10 @@
 from typing import Dict
-from datetime import datetime
-import requests
 from service.youtube_base import YoutubeBase
 
 
-class YoutubeAssunto(YoutubeBase):
-
-    def __init__(self, assunto: str, data_hora_busca: str) -> None:
-
-        self._path_url = 'search'
+class YoutubeVideo(YoutubeBase):
+    def __init__(self, params: Dict) -> None:
+        self._path_url = 'videos'
         self._params = {
             'part': 'snippet',
             'regionCode': 'BR',
@@ -18,4 +14,4 @@ class YoutubeAssunto(YoutubeBase):
             'publishedAfter': data_hora_busca,
 
         }
-        super().__init__(params=self._params, path_url=self._path_url)
+        super().__init__(params, )
