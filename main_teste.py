@@ -12,11 +12,12 @@ ya = YoutubeAssunto(assunto='Linux', data_hora_busca=data_hora_busca)
 pgs = ya.executar_paginacao()
 
 for pg in pgs:
-    print(pg)
+    print(data_hora_busca)
     ij = InfraJson(
         diretorio_datalake='bronze',
         termo_assunto='linux',
         metrica='requisicao_busca',
+        
         nome_arquivo='req.json'
     )
     ij.salvar_dados(req=pg)
