@@ -39,5 +39,5 @@ class InfraDados(IInfraDados):
             'data',
             self._diretorio_datalake,
             self._termo_assunto,
-            self._path_data
+
         )

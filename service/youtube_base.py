@@ -31,6 +31,5 @@ class YoutubeBase(ABC):
                 try:
                     next_token = response['nextPageToken']
                     self._params['pageToken'] = next_token
-                    print('próximo token', next_token)
                 except KeyError:
                     break

@@ -27,7 +27,6 @@ class YoutubeCanal(YoutubeBase):
 
     def listar_canais(self) -> bool:
         req = self.conectar_api()
-
         flag = self.__verificar_idioma(req=req)
         return flag
 
