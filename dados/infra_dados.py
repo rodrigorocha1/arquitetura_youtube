@@ -7,7 +7,6 @@ class InfraDados(IInfraDados):
         self,
         diretorio_datalake: str,
             termo_assunto: str,
-            path_extracao: str,
             metrica: str,
             nome_arquivo: str,
 
@@ -30,14 +29,13 @@ class InfraDados(IInfraDados):
         self._diretorio_completo = os.path.join(
             self._CAMINHO_BASE,
             self._diretorio_datalake,
-            self._termo_assunto,
-            self._path_extracao,       
+            self._termo_assunto,  
             self._metrica,
             self._nome_arquivo
         ) if self._metrica is not None else os.path.join(
             self._CAMINHO_BASE,
             self._diretorio_datalake,
             self._termo_assunto,
-            self._path_extracao,
+            self._nome_arquivo
 
         )
