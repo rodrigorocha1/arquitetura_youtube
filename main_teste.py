@@ -3,6 +3,7 @@ import pendulum
 
 from service.youtube_canal import YoutubeCanal
 from service.youtube_assunto import YoutubeAssunto
+from service.youtube_video import YoutubeVideo
 from service.youtube_canal import YoutubeCanal
 from dados.infra_json import InfraJson
 from dados.infra_pickle import InfraPicke
@@ -70,6 +71,7 @@ path_data = data_hora_busca_path.replace(
 # for canal in lista_canais:
 #     yc = YoutubeCanal(id_canal=canal)
 #     req = yc.conectar_api()
+
 #     ij = InfraJson(
 #         diretorio_datalake='bronze',
 #         termo_assunto=assunto,
@@ -80,4 +82,46 @@ path_data = data_hora_busca_path.replace(
 #     ij.salvar_dados(req=req)
 
 
-# buscar vídeos
+# busca_videos
+# ifp = InfraPicke(
+#     diretorio_datalake='bronze',
+#     termo_assunto=assunto,
+#     metrica=None,
+#     path_data=None,
+#     nome_arquivo='id_videos.pkl'
+# )
+
+# lista_videos = ifp.carregar_dados()
+# for video in lista_videos:
+#     yv = YoutubeVideo(id_video=video)
+#     req = yv.conectar_api()
+#     ij = InfraJson(
+#         diretorio_datalake='bronze',
+#         termo_assunto=assunto,
+#         metrica='estatistica_video',
+#         path_data=f'extracao_{path_data}',
+#         nome_arquivo='req.json'
+#     )
+#     if yv.verificar_comentarios(req=req):
+#         ifp = InfraPicke(
+#             diretorio_datalake='bronze',
+#             termo_assunto=assunto,
+#             metrica=None,
+#             path_data=None,
+#             nome_arquivo='lista_id_videos_comentarios.pkl'
+#         )
+#         ifp.salvar_dados(lista=[video])
+
+#     ij.salvar_dados(req)
+
+
+# busca_videos
+ifp = InfraPicke(
+    diretorio_datalake='bronze',
+    termo_assunto=assunto,
+    metrica=None,
+    path_data=None,
+    nome_arquivo='lista_id_videos_comentarios.pkl'
+)
+lista_videos_comentarios = ifp.carregar_dados()
+print(lista_videos_comentarios)
