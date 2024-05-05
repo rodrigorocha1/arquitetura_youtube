@@ -1,10 +1,11 @@
-from typing import Dict,List
+from typing import Dict, List
 from datetime import datetime
 import requests
 from service.youtube_base import YoutubeBase
 
+
 class YoutubeCanal(YoutubeBase):
-    def __init__(self, id_canal: str ) -> None:
+    def __init__(self, id_canal: str) -> None:
         self.__path_url = 'channels'
         self._id_canal = id_canal
         self._params = {
@@ -15,16 +16,20 @@ class YoutubeCanal(YoutubeBase):
         super().__init__(params=self._params)
 
     def __verificar_idioma(self, req: Dict) -> bool:
-        flag = req['items'][0]['snippet']['country']
-        if flag == 'BR':
-            return True
-    
+
+        try:
+            flag = req['items'][0]['snippet']['country']
+            if flag == 'BR':
+                return True
+            return False
+        except:
+            return False
+
     def listar_canais(self) -> bool:
-         req = self.conectar_api()
-         flag = self.__verificar_idioma(req=req)
-         return flag
+        req = self.conectar_api()
 
-
+        flag = self.__verificar_idioma(req=req)
+        return flag
 
     def conectar_api(self) -> Dict:
         req = requests.get(url=self._url_base +
