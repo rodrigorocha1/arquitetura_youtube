@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict
 from service.youtube_base import YoutubeBase
 
 
@@ -7,9 +7,8 @@ class YoutubeComentario(YoutubeBase):
         self._path_url = 'commentThreads'
         self._id_video = id_video
         self._params = {
-            'part': 'snippet,statistics',
-            'id': self._id_video,
-            'maxResults': '100'
+            'part': 'snippet',
+            'videoId': self._id_video
         }
         super().__init__(params=self._params, path_url=self._path_url)
 
