@@ -33,7 +33,7 @@ class DadosYoutube():
             req = response.json()
             flag = req['items'][0]['snippet']['country']
             if flag == 'BR':
-                return True
+                return True, req
             return False
         except:
             return False
