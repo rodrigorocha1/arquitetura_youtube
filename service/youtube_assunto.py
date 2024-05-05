@@ -1,7 +1,7 @@
-from service.youtube_base import YoutubeBase
 from typing import Dict
-import requests
 from datetime import datetime
+import requests
+from service.youtube_base import YoutubeBase
 
 
 class YoutubeAssunto(YoutubeBase):
@@ -21,7 +21,7 @@ class YoutubeAssunto(YoutubeBase):
 
     def conectar_api(self) -> Dict:
         req = requests.get(url=self._url_base +
-                           self.__path_url, params=self.__params)
+                           self.__path_url, params=self.__params, timeout=10)
         req = req.json()
         req['data_extracao'] = datetime.now().strftime(
             '%Y-%m-%d %H:%M:%S'

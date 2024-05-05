@@ -26,7 +26,7 @@ for pg in pgs:
         nome_arquivo='req.json'
     )
     lista_canais_videos = DadosYoutube.obter_lista_canal_videos(req=pg)
-    lista_canais_videos[0]
+
     print(lista_canais_videos)
     ij.salvar_dados(req=pg)
 
@@ -38,7 +38,7 @@ for pg in pgs:
     #     path_data=f'extracao_{path_data}',
     #     nome_arquivo='id_videos.pkl'
     # )
-    ifp.salvar_dados(lista=lista_videos)
+    # ifp.salvar_dados(lista=lista_videos)
     
     # # Colocar aqui para verificar o canal e gravar o arquivo pkl se for canal brasileiro
 
