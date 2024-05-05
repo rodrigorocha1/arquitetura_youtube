@@ -36,7 +36,7 @@ for pg in pgs:
         termo_assunto=assunto.replace(' ', ''),
         metrica=None,
         path_data=f'extracao_{path_data}',
-        nome_arquivo='videos.pkl'
+        nome_arquivo='id_videos.pkl'
     )
     ifp.salvar_dados(lista=lista_videos)
     
