@@ -9,6 +9,7 @@ from airflow.decorators import task, dag, task_group
 import pendulum
 from service.youtube_assunto import YoutubeAssunto
 from service.youtube_canal import YoutubeCanal
+from service.youtube_video import YoutubeVideo
 from dados.infra_json import InfraJson
 from dados.infra_pickle import InfraPicke
 
@@ -78,6 +79,40 @@ def task_buscar_dados_canais(assunto: str, path_data: str):
         ij.salvar_dados(req=req)
 
 
+@task
+def task_obter_dados_videos(assunto: str, path_data: str):
+    ifp = InfraPicke(
+        diretorio_datalake='bronze',
+        termo_assunto=assunto,
+        metrica=None,
+        path_data=None,
+        nome_arquivo='id_videos.pkl'
+    )
+    lista_videos = ifp.carregar_dados()
+
+    for video in lista_videos:
+        yv = YoutubeVideo(id_video=video)
+        req = yv.conectar_api()
+        ij = InfraJson(
+            diretorio_datalake='bronze',
+            termo_assunto=assunto,
+            metrica='estatistica_video',
+            path_data=f'extracao_{path_data}',
+            nome_arquivo='req.json'
+        )
+        if yv.verificar_comentarios(req=req):
+            ifp = InfraPicke(
+                diretorio_datalake='bronze',
+                termo_assunto=assunto,
+                metrica=None,
+                path_data=None,
+                nome_arquivo='lista_id_videos_comentarios.pkl'
+            )
+            ifp.salvar_dados(lista=[video])
+
+        ij.salvar_dados(req)
+
+
 @dag(
     start_date=datetime(2023, 8, 1),
     schedule=None,
@@ -110,7 +145,15 @@ def dag_youtube():
                 task_id=f"assunto_{assunto.replace(' ', '_').lower()}"
             )(assunto, path_data)
 
-    inicio_dag() >> obter_assunto() >> obter_dados_canais() >> fim_dag()
+    @task_group
+    def obter_dados_videos():
+        for assunto in lista_assunto:
+            task_obter_dados_videos.override(
+                task_id=f"assunto_{assunto.replace(' ', '_').lower()}"
+            )(assunto, path_data)
+
+    inicio_dag() >> obter_assunto() >> obter_dados_canais(
+    ) >> obter_dados_videos() >> fim_dag()
 
 
 dag_youtube()
