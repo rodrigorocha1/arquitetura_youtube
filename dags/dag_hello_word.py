@@ -55,6 +55,19 @@ def task_obter_assunto(
 
         ij.salvar_dados(req=pg)
 
+        nome_arquivos = ['id_canais.pkl', 'id_videos.pkl']
+
+        for canal_video_br in lista_canais_videos_brasileiros:
+            for chave, nome_arquivo in enumerate(nome_arquivos):
+                ifp = InfraPicke(
+                    diretorio_datalake='bronze',
+                    termo_assunto=assunto,
+                    metrica=None,
+                    path_data=None,
+                    nome_arquivo=nome_arquivo
+                )
+                ifp.salvar_dados(lista=[canal_video_br[chave]])
+
 
 @task
 def task_buscar_dados_canais(assunto: str, path_data: str):
@@ -127,29 +140,32 @@ def task_obter_dados_comentarios(assunto: str, path_data: str):
 
     lista_videos_comentarios = ifp.carregar_dados()
 
-    for video_comentario in lista_videos_comentarios:
-        yc = YoutubeComentario(id_video=video_comentario)
-        pgs = yc.executar_paginacao()
-        for pg in pgs:
+    if lista_videos_comentarios is not None:
 
-            lista_resposta_comentarios = yc.obter_resposta_comentarios(req=pg)
-            ij = InfraJson(
-                diretorio_datalake='bronze',
-                termo_assunto=assunto,
-                metrica='comentarios',
-                path_data=f'extracao_{path_data}',
-                nome_arquivo='req.json'
-            )
-            ij.salvar_dados(req=pg)
+        for video_comentario in lista_videos_comentarios:
+            yc = YoutubeComentario(id_video=video_comentario)
+            pgs = yc.executar_paginacao()
+            for pg in pgs:
 
-            ifp = InfraPicke(
-                diretorio_datalake='bronze',
-                termo_assunto=assunto,
-                metrica=None,
-                path_data=None,
-                nome_arquivo='lista_resposta_comentarios.pkl'
-            )
-            ifp.salvar_dados(lista=lista_resposta_comentarios)
+                lista_resposta_comentarios = yc.obter_resposta_comentarios(
+                    req=pg)
+                ij = InfraJson(
+                    diretorio_datalake='bronze',
+                    termo_assunto=assunto,
+                    metrica='comentarios',
+                    path_data=f'extracao_{path_data}',
+                    nome_arquivo='req.json'
+                )
+                ij.salvar_dados(req=pg)
+
+                ifp = InfraPicke(
+                    diretorio_datalake='bronze',
+                    termo_assunto=assunto,
+                    metrica=None,
+                    path_data=None,
+                    nome_arquivo='lista_resposta_comentarios.pkl'
+                )
+                ifp.salvar_dados(lista=lista_resposta_comentarios)
 
 
 @task
@@ -163,21 +179,22 @@ def task_ober_resposta_comentarios(assunto: str, path_data: str):
     )
 
     lista_videos_resposta_comentarios = ifp.carregar_dados()
-    for video_resposta_comentarios in lista_videos_resposta_comentarios:
-        if video_resposta_comentarios[1] > 0:
-            yrc = YoutubeRespostaComentario(
-                id_resposta_comentario=video_resposta_comentarios[0]
-            )
-            pgs = yrc.executar_paginacao()
-            for pg in pgs:
-                ij = InfraJson(
-                    diretorio_datalake='bronze',
-                    termo_assunto=assunto,
-                    metrica='respota_comentarios',
-                    path_data=f'extracao_{path_data}',
-                    nome_arquivo='req.json'
+    if lista_videos_resposta_comentarios is not None:
+        for video_resposta_comentarios in lista_videos_resposta_comentarios:
+            if video_resposta_comentarios[1] > 0:
+                yrc = YoutubeRespostaComentario(
+                    id_resposta_comentario=video_resposta_comentarios[0]
                 )
-                ij.salvar_dados(req=pg)
+                pgs = yrc.executar_paginacao()
+                for pg in pgs:
+                    ij = InfraJson(
+                        diretorio_datalake='bronze',
+                        termo_assunto=assunto,
+                        metrica='respota_comentarios',
+                        path_data=f'extracao_{path_data}',
+                        nome_arquivo='req.json'
+                    )
+                    ij.salvar_dados(req=pg)
 
 
 @dag(
@@ -196,6 +213,10 @@ def dag_youtube():
     @task
     def fim_dag():
         print('fim dag')
+
+    @task
+    def sem_dados():
+        print('Sem dados')
 
     @task_group
     def obter_assunto():
